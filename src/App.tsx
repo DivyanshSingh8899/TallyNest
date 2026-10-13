@@ -11,6 +11,7 @@ import { TransactionsTable } from './components/transactions/TransactionsTable';
 import { TimeRangeSlider } from './components/ui/TimeRangeSlider';
 import { CategoryManager } from './components/transactions/CategoryManager';
 import { ExpensePolicyPage } from './components/policies/ExpensePolicyPage';
+import { SmartDebtSettlementPage } from './components/settlement/SmartDebtSettlementPage';
 import {
   GlobalOverviewSection,
   CategoryInsightsSection,
@@ -27,7 +28,7 @@ import { useStore, useFilteredTransactions } from './store';
 
 import { getTranslation } from './i18n/translations';
 
-type PageType = 'dashboard' | 'categories' | 'transactions' | 'analytics' | 'policies';
+type PageType = 'dashboard' | 'categories' | 'transactions' | 'analytics' | 'policies' | 'settlement';
 
 const DashboardPage = () => {
   const { parsedData, language } = useStore();
@@ -207,6 +208,8 @@ function App() {
         return <AnalyticsPage />;
       case 'policies':
         return <ExpensePolicyPage />;
+      case 'settlement':
+        return <SmartDebtSettlementPage />;
       default:
         return <DashboardPage />;
     }

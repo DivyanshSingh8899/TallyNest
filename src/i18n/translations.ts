@@ -12,6 +12,7 @@ export const translations = {
       analytics: 'Analytics',
       categories: 'Categories',
       policies: 'Expense policies',
+      smartSettlement: 'Smart Debt Settlement',
     },
     // Sidebar
     sidebar: {
@@ -293,6 +294,7 @@ export const translations = {
       analytics: 'Analisi',
       categories: 'Categorie',
       policies: 'Regole di spesa',
+      smartSettlement: 'Regolamento intelligente',
     },
     // Sidebar
     sidebar: {
@@ -570,7 +572,7 @@ export const translations = {
 
 // Get structured translation type that works for both languages
 export type Translations = {
-  nav: { dashboard: string; transactions: string; analytics: string; categories: string; policies: string };
+  nav: { dashboard: string; transactions: string; analytics: string; categories: string; policies: string; smartSettlement: string };
   sidebar: {
     title: string;
     subtitle: string;
