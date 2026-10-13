@@ -37,6 +37,7 @@ import {
   ArrowRightLeft,
   Tags,
   Github,
+  Scale,
 } from 'lucide-react';
 import { useStore } from '../../store';
 import { getTranslation, type Language } from '../../i18n/translations';
@@ -109,6 +110,7 @@ export const Layout = ({ children, currentPage, onPageChange }: LayoutProps) => 
     { id: 'categories' as const, label: t.nav.categories, icon: Tags, alwaysShow: false },
     { id: 'transactions' as const, label: t.nav.transactions, icon: Table2, alwaysShow: true },
     { id: 'analytics' as const, label: t.nav.analytics, icon: PieChart, alwaysShow: true },
+    { id: 'policies' as const, label: t.nav.policies, icon: Scale, alwaysShow: true },
   ];
 
   const drawer = (

@@ -18,6 +18,7 @@ Fully responsive mobile-friendly view, with drag&drop features rethought as tap-
 - A searchable, filterable transaction table.
 - A variety of insightful analytics on categories, members, and group fairness.
 - Category customization (rename and merge) to personalize your analytics.
+- Explainable expense-sharing policies with allocation previews and local change history.
 - Multi-currency support with real-time exchange rate conversion.
 - Multi-language support (currently English and Italian).
 
@@ -39,6 +40,10 @@ npm run dev
 ```
 
 ## Sections Overview
+
+### Expense Policies
+
+Create category-specific or group-wide equal, percentage, fixed-amount, and weighted sharing rules. Set priorities, exclude members, detect overlapping rules, and compare a proposed allocation with the current shares inferred from CSV balances. Each preview shows its calculation and rounding adjustments. Policy changes are stored in this browser and do not modify imported transactions or CSV data.
 
 ### 1. Dashboard: Global Stats & Members Summary
 
