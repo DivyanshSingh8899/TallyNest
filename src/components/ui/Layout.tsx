@@ -111,6 +111,7 @@ export const Layout = ({ children, currentPage, onPageChange }: LayoutProps) => 
     { id: 'transactions' as const, label: t.nav.transactions, icon: Table2, alwaysShow: true },
     { id: 'analytics' as const, label: t.nav.analytics, icon: PieChart, alwaysShow: true },
     { id: 'policies' as const, label: t.nav.policies, icon: Scale, alwaysShow: true },
+    { id: 'settlement' as const, label: t.nav.smartSettlement, icon: ArrowRightLeft, alwaysShow: false },
   ];
 
   const drawer = (
