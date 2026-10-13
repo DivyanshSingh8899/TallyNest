@@ -20,6 +20,21 @@ export interface PolicyConflict {
   overlappingCategories: string[];
 }
 
+export type ScenarioPolicyType = 'equal' | 'consumption' | 'roomSize' | 'weighted';
+
+export interface ScenarioPolicy {
+  type: ScenarioPolicyType;
+  weights: Record<string, number>;
+}
+
+export interface ScenarioResult {
+  balances: Record<string, number>;
+  totalExpense: number;
+  fairnessScore: number;
+  allocations: number;
+  warnings: string[];
+}
+
 const CENT = 100;
 const ROUNDING_TOLERANCE = 0.000001;
 
@@ -245,4 +260,75 @@ export const inferExistingAllocation = (
   debtors.forEach(([member, amount]) => allocations.set(member, Math.abs(amount)));
   warnings.push('Existing shares are inferred from net balances; multiple positive balances make this split ambiguous.');
   return { allocations, warnings };
+};
+
+const roundCurrency = (amount: number): number => Math.round((amount + Number.EPSILON) * 100) / 100;
+
+/**
+ * Recalculates net balances without mutating imported transactions. Positive
+ * values are amounts paid in excess of the simulated share.
+ */
+export const calculateScenario = (
+  transactions: Transaction[],
+  members: string[],
+  scenario: ScenarioPolicy,
+  currency: string,
+): ScenarioResult => {
+  const balances = Object.fromEntries(members.map((member) => [member, 0]));
+  const expenses = transactions.filter((transaction) =>
+    !transaction.isTransfer && transaction.currency === currency && transaction.cost > 0,
+  );
+  const warnings: string[] = [];
+  let totalExpense = 0;
+
+  expenses.forEach((transaction) => {
+    totalExpense += transaction.cost;
+    const existing = inferExistingAllocation(transaction);
+    const eligibleMembers = scenario.type === 'consumption'
+      ? members.filter((member) => existing.allocations.has(member))
+      : members;
+    const participants = eligibleMembers.length > 0 ? eligibleMembers : members;
+    const rawWeights = participants.map((member) => (
+      scenario.type === 'equal' || scenario.type === 'consumption'
+        ? 1
+        : Math.max(0, scenario.weights[member] ?? 1)
+    ));
+    const totalWeight = rawWeights.reduce((sum, weight) => sum + weight, 0);
+
+    if (totalWeight <= 0) {
+      warnings.push(`No positive weights were provided for "${transaction.description || transaction.category}".`);
+      return;
+    }
+
+    const payerContribution = Object.entries(transaction.memberBalances)
+      .filter(([, amount]) => amount > 0)
+      .reduce((sum, [, amount]) => sum + amount, 0);
+    const shareTotal = transaction.cost;
+    participants.forEach((member, index) => {
+      const share = shareTotal * rawWeights[index] / totalWeight;
+      balances[member] = (balances[member] ?? 0) + share;
+    });
+    if (payerContribution > 0) {
+      Object.entries(transaction.memberBalances).forEach(([member, amount]) => {
+        if (member in balances && amount > 0) balances[member] -= amount;
+      });
+    }
+  });
+
+  const roundedBalances = Object.fromEntries(
+    Object.entries(balances).map(([member, balance]) => [member, roundCurrency(-balance)]),
+  );
+  const values = Object.values(roundedBalances);
+  const mean = values.length > 0 ? values.reduce((sum, value) => sum + value, 0) / values.length : 0;
+  const deviation = values.length > 0
+    ? Math.sqrt(values.reduce((sum, value) => sum + (value - mean) ** 2, 0) / values.length)
+    : 0;
+
+  return {
+    balances: roundedBalances,
+    totalExpense: roundCurrency(totalExpense),
+    fairnessScore: roundCurrency(100 / (1 + deviation)),
+    allocations: expenses.length,
+    warnings: Array.from(new Set(warnings)),
+  };
 };

@@ -22,6 +22,7 @@ const {
   inferExistingAllocation,
   selectExpensePolicy,
   validateExpensePolicy,
+  calculateScenario,
 } = policyModule.exports;
 
 const members = ['Alice', 'Bob', 'Cara'];
@@ -130,4 +131,29 @@ test('existing inferred shares include the single payer share and flag ambiguity
     memberBalances: { Alice: 60, Bob: 40, Cara: -100 },
   });
   assert.ok(ambiguous.warnings.some((warning) => warning.includes('ambiguous')));
+});
+
+test('counterfactual scenarios preserve totals and change balances by policy', () => {
+  const transactions = [{
+    id: 'expense-1',
+    date: new Date('2026-01-01'),
+    description: 'Rent',
+    category: 'Rent',
+    cost: 90,
+    currency: 'EUR',
+    memberBalances: { Alice: 90, Bob: -45, Cara: -45 },
+    isTransfer: false,
+  }];
+  const equal = calculateScenario(transactions, members, { type: 'equal', weights: {} }, 'EUR');
+  const weighted = calculateScenario(
+    transactions,
+    members,
+    { type: 'weighted', weights: { Alice: 1, Bob: 2, Cara: 3 } },
+    'EUR',
+  );
+  assert.equal(equal.totalExpense, 90);
+  assert.equal(equal.allocations, 1);
+  assert.deepEqual(equal.balances, { Alice: 60, Bob: -30, Cara: -30 });
+  assert.deepEqual(weighted.balances, { Alice: 75, Bob: -30, Cara: -45 });
+  assert.equal(equal.warnings.length, 0);
 });

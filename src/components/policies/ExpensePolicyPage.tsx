@@ -33,6 +33,7 @@ import {
   selectExpensePolicy,
   validateExpensePolicy,
 } from '../../utils/expensePolicy';
+import { CounterfactualFairnessSimulator } from './CounterfactualFairnessSimulator';
 
 const splitTypeLabel = (splitType: ExpenseSplitType, t: ReturnType<typeof getTranslation>) => ({
   equal: t.policies.equal,
@@ -458,6 +459,14 @@ export const ExpensePolicyPage = () => {
             )}
           </Paper>
         </Stack>
+      </Box>
+      <Box sx={{ mt: 3 }}>
+        <CounterfactualFairnessSimulator
+          transactions={expenses}
+          members={members}
+          currency={parsedData?.currency ?? 'EUR'}
+          language={language}
+        />
       </Box>
     </Box>
   );

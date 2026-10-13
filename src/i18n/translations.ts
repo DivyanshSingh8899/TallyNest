@@ -273,6 +273,16 @@ export const translations = {
       excluded: 'Excluded',
       noMembers: 'Upload a CSV to configure member-specific values and exclusions.',
       selectRule: 'Select a policy to edit.',
+      simulatorTitle: 'Counterfactual fairness simulator',
+      simulatorSubtitle: 'Compare alternative sharing policies before settling debts. Positive balances receive money; negative balances owe money.',
+      simulatorExpenses: 'expenses simulated',
+      simulatorNoData: 'Load expense data to simulate alternative sharing policies.',
+      simulatorWeightsHint: 'Enter room-size or contribution weights. A larger weight receives a larger share.',
+      simulatorFairnessHint: 'Fairness score (0–100) rewards scenarios with smaller balance differences; it is a comparison aid, not a judgment.',
+      simulatorSelected: 'Selected scenario',
+      simulatorFairness: 'fairness score',
+      consumption: 'Consumption-based',
+      roomSize: 'Room-size rent',
     },
   },
   it: {
@@ -544,6 +554,16 @@ export const translations = {
       excluded: 'Escluso',
       noMembers: 'Carica un CSV per configurare valori ed esclusioni per membro.',
       selectRule: 'Seleziona una regola da modificare.',
+      simulatorTitle: 'Simulatore di equità controfattuale',
+      simulatorSubtitle: 'Confronta metodi di ripartizione alternativi prima di saldare i debiti. I saldi positivi ricevono denaro; quelli negativi devono pagare.',
+      simulatorExpenses: 'spese simulate',
+      simulatorNoData: 'Carica i dati delle spese per simulare metodi di ripartizione alternativi.',
+      simulatorWeightsHint: 'Inserisci i pesi delle dimensioni delle stanze o dei contributi. Un peso maggiore riceve una quota maggiore.',
+      simulatorFairnessHint: 'Il punteggio di equità (0–100) premia gli scenari con minori differenze tra saldi; è un aiuto al confronto, non un giudizio.',
+      simulatorSelected: 'Scenario selezionato',
+      simulatorFairness: 'punteggio di equità',
+      consumption: 'Basata sui consumi',
+      roomSize: 'Affitto per dimensione stanza',
     },
   },
 } as const;
@@ -796,6 +816,16 @@ export type Translations = {
     excluded: string;
     noMembers: string;
     selectRule: string;
+    simulatorTitle: string;
+    simulatorSubtitle: string;
+    simulatorExpenses: string;
+    simulatorNoData: string;
+    simulatorWeightsHint: string;
+    simulatorFairnessHint: string;
+    simulatorSelected: string;
+    simulatorFairness: string;
+    consumption: string;
+    roomSize: string;
   };
 };
 
