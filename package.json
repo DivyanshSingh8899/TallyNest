@@ -1,0 +1,9 @@
+{
+  "name": "splitwise-csv-analytics-workspace",
+  "private": true,
+  "scripts": {
+    "dev": "npm --prefix ./Splitwise-CSV-Analytics-main run dev",
+    "build": "npm --prefix ./Splitwise-CSV-Analytics-main run build",
+    "preview": "npm --prefix ./Splitwise-CSV-Analytics-main run preview"
+  }
+}
