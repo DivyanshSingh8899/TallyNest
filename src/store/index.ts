@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import type { ParsedData, FilterState, ThemeMode, TimeGrouping, ExchangeRates, CategoryGroup, CategoryRenames } from '../types';
+import type { ParsedData, FilterState, ThemeMode, TimeGrouping, ExchangeRates, CategoryGroup, CategoryRenames, ExpensePolicy, ExpensePolicyAuditEntry } from '../types';
 import type { Language } from '../i18n/translations';
 
 interface AppState {
@@ -23,6 +23,8 @@ interface AppState {
   // Category management
   categoryGroups: CategoryGroup[];
   categoryRenames: CategoryRenames;
+  expensePolicies: ExpensePolicy[];
+  expensePolicyAudit: ExpensePolicyAuditEntry[];
 
   // Theme
   themeMode: ThemeMode;
@@ -47,6 +49,8 @@ interface AppState {
   setCategoryGroups: (groups: CategoryGroup[]) => void;
   setCategoryRenames: (renames: CategoryRenames) => void;
   clearCategoryMappings: () => void;
+  saveExpensePolicy: (policy: ExpensePolicy) => void;
+  deleteExpensePolicy: (policyId: string) => void;
 }
 
 const initialFilters: FilterState = {
@@ -70,6 +74,8 @@ export const useStore = create<AppState>()(
       isLoadingRates: false,
       categoryGroups: [],
       categoryRenames: {},
+      expensePolicies: [],
+      expensePolicyAudit: [],
       themeMode: 'dark',
       language: 'en' as const,  // Default to English
 
@@ -94,6 +100,42 @@ export const useStore = create<AppState>()(
       setCategoryGroups: (groups) => set({ categoryGroups: groups }),
       setCategoryRenames: (renames) => set({ categoryRenames: renames }),
       clearCategoryMappings: () => set({ categoryGroups: [], categoryRenames: {} }),
+      saveExpensePolicy: (policy) => set((state) => {
+        const existing = state.expensePolicies.find((item) => item.id === policy.id);
+        const action = existing ? 'updated' : 'created';
+        const auditEntry: ExpensePolicyAuditEntry = {
+          id: crypto.randomUUID(),
+          policyId: policy.id,
+          policyName: policy.name,
+          action,
+          timestamp: new Date().toISOString(),
+          summary: existing
+            ? `Updated "${policy.name}" (${policy.category === '*' ? 'all categories' : policy.category}, ${policy.splitType} split).`
+            : `Created "${policy.name}" (${policy.category === '*' ? 'all categories' : policy.category}, ${policy.splitType} split).`,
+        };
+        return {
+          expensePolicies: existing
+            ? state.expensePolicies.map((item) => item.id === policy.id ? policy : item)
+            : [...state.expensePolicies, policy],
+          expensePolicyAudit: [auditEntry, ...state.expensePolicyAudit].slice(0, 100),
+        };
+      }),
+      deleteExpensePolicy: (policyId) => set((state) => {
+        const policy = state.expensePolicies.find((item) => item.id === policyId);
+        if (!policy) return state;
+        const auditEntry: ExpensePolicyAuditEntry = {
+          id: crypto.randomUUID(),
+          policyId: policy.id,
+          policyName: policy.name,
+          action: 'deleted',
+          timestamp: new Date().toISOString(),
+          summary: `Deleted "${policy.name}".`,
+        };
+        return {
+          expensePolicies: state.expensePolicies.filter((item) => item.id !== policyId),
+          expensePolicyAudit: [auditEntry, ...state.expensePolicyAudit].slice(0, 100),
+        };
+      }),
     }),
     {
       name: 'splitwise-dashboard-storage',
@@ -102,6 +144,8 @@ export const useStore = create<AppState>()(
         language: state.language,  // Persist language preference
         categoryGroups: state.categoryGroups,
         categoryRenames: state.categoryRenames,
+        expensePolicies: state.expensePolicies,
+        expensePolicyAudit: state.expensePolicyAudit,
         // Don't persist data - it should be re-uploaded each session
       }),
     }

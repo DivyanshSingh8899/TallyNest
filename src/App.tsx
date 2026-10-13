@@ -10,6 +10,7 @@ import { MonthlyTrendChart } from './components/charts/MonthlyTrendChart';
 import { TransactionsTable } from './components/transactions/TransactionsTable';
 import { TimeRangeSlider } from './components/ui/TimeRangeSlider';
 import { CategoryManager } from './components/transactions/CategoryManager';
+import { ExpensePolicyPage } from './components/policies/ExpensePolicyPage';
 import {
   GlobalOverviewSection,
   CategoryInsightsSection,
@@ -26,7 +27,7 @@ import { useStore, useFilteredTransactions } from './store';
 
 import { getTranslation } from './i18n/translations';
 
-type PageType = 'dashboard' | 'categories' | 'transactions' | 'analytics';
+type PageType = 'dashboard' | 'categories' | 'transactions' | 'analytics' | 'policies';
 
 const DashboardPage = () => {
   const { parsedData, language } = useStore();
@@ -204,6 +205,8 @@ function App() {
         return <TransactionsPage />;
       case 'analytics':
         return <AnalyticsPage />;
+      case 'policies':
+        return <ExpensePolicyPage />;
       default:
         return <DashboardPage />;
     }

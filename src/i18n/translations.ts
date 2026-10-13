@@ -11,6 +11,7 @@ export const translations = {
       transactions: 'Transactions',
       analytics: 'Analytics',
       categories: 'Categories',
+      policies: 'Expense policies',
     },
     // Sidebar
     sidebar: {
@@ -225,6 +226,54 @@ export const translations = {
       category: 'category',
       categoriesCount: 'categories',
     },
+    policies: {
+      title: 'Expense policy engine',
+      subtitle: 'Create explainable sharing rules and preview them without changing imported transactions.',
+      newPolicy: 'New policy',
+      editPolicy: 'Edit policy',
+      policyName: 'Policy name',
+      category: 'Category',
+      allCategories: 'All categories',
+      priority: 'Priority (higher wins)',
+      enabled: 'Enabled',
+      splitType: 'Split method',
+      equal: 'Equal',
+      percentage: 'Percentage',
+      fixed: 'Fixed amounts',
+      weighted: 'Weighted',
+      excludedMembers: 'Exclude members',
+      memberValues: 'Member values',
+      memberValuesHint: 'Enter percentages that total 100%, fixed shares (unassigned members split the remainder), or non-negative weights.',
+      save: 'Save policy',
+      cancel: 'Cancel',
+      noPolicies: 'No policies yet. Create a rule to preview how expenses could be shared.',
+      active: 'Active',
+      inactive: 'Inactive',
+      conflict: 'Conflict',
+      preview: 'Allocation preview',
+      selectExpense: 'Choose an expense',
+      noExpenses: 'Load a CSV with expenses to preview allocations.',
+      existing: 'Current inferred shares',
+      proposed: 'Proposed shares',
+      member: 'Member',
+      amount: 'Share',
+      calculation: 'Calculation',
+      adjustment: 'Rounding adjustment',
+      warnings: 'Warnings',
+      errors: 'Validation errors',
+      audit: 'Policy change history',
+      auditEmpty: 'Policy changes will appear here.',
+      delete: 'Delete',
+      edit: 'Edit',
+      noRule: 'No active policy matches this category.',
+      ambiguousRule: 'More than one top-priority policy matches this category. Resolve the conflict to preview a split.',
+      choosePolicy: 'Choose policy',
+      conflicts: 'Conflicts',
+      conflictHint: 'Enabled policies with equal priority and overlapping categories conflict.',
+      excluded: 'Excluded',
+      noMembers: 'Upload a CSV to configure member-specific values and exclusions.',
+      selectRule: 'Select a policy to edit.',
+    },
   },
   it: {
     // Navigation
@@ -233,6 +282,7 @@ export const translations = {
       transactions: 'Transazioni',
       analytics: 'Analisi',
       categories: 'Categorie',
+      policies: 'Regole di spesa',
     },
     // Sidebar
     sidebar: {
@@ -447,12 +497,60 @@ export const translations = {
       category: 'categoria',
       categoriesCount: 'categorie',
     },
+    policies: {
+      title: 'Regole di spesa',
+      subtitle: 'Crea regole di condivisione spiegabili e visualizza un’anteprima senza modificare le transazioni importate.',
+      newPolicy: 'Nuova regola',
+      editPolicy: 'Modifica regola',
+      policyName: 'Nome regola',
+      category: 'Categoria',
+      allCategories: 'Tutte le categorie',
+      priority: 'Priorità (vince il valore maggiore)',
+      enabled: 'Attiva',
+      splitType: 'Metodo di ripartizione',
+      equal: 'Uguale',
+      percentage: 'Percentuale',
+      fixed: 'Importi fissi',
+      weighted: 'Ponderata',
+      excludedMembers: 'Escludi membri',
+      memberValues: 'Valori per membro',
+      memberValuesHint: 'Inserisci percentuali per un totale del 100%, quote fisse (il resto è diviso tra i membri non assegnati) o pesi non negativi.',
+      save: 'Salva regola',
+      cancel: 'Annulla',
+      noPolicies: 'Nessuna regola. Creane una per visualizzare un’anteprima della ripartizione delle spese.',
+      active: 'Attiva',
+      inactive: 'Inattiva',
+      conflict: 'Conflitto',
+      preview: 'Anteprima ripartizione',
+      selectExpense: 'Scegli una spesa',
+      noExpenses: 'Carica un CSV con spese per visualizzare un’anteprima.',
+      existing: 'Quote attuali stimate',
+      proposed: 'Quote proposte',
+      member: 'Membro',
+      amount: 'Quota',
+      calculation: 'Calcolo',
+      adjustment: 'Adeguamento arrotondamento',
+      warnings: 'Avvisi',
+      errors: 'Errori di convalida',
+      audit: 'Cronologia modifiche regole',
+      auditEmpty: 'Le modifiche alle regole appariranno qui.',
+      delete: 'Elimina',
+      edit: 'Modifica',
+      noRule: 'Nessuna regola attiva corrisponde a questa categoria.',
+      ambiguousRule: 'Più regole con priorità massima corrispondono a questa categoria. Risolvi il conflitto per visualizzare la ripartizione.',
+      choosePolicy: 'Scegli regola',
+      conflicts: 'Conflitti',
+      conflictHint: 'Le regole attive con priorità uguale e categorie sovrapposte sono in conflitto.',
+      excluded: 'Escluso',
+      noMembers: 'Carica un CSV per configurare valori ed esclusioni per membro.',
+      selectRule: 'Seleziona una regola da modificare.',
+    },
   },
 } as const;
 
 // Get structured translation type that works for both languages
 export type Translations = {
-  nav: { dashboard: string; transactions: string; analytics: string; categories: string };
+  nav: { dashboard: string; transactions: string; analytics: string; categories: string; policies: string };
   sidebar: {
     title: string;
     subtitle: string;
@@ -650,6 +748,54 @@ export type Translations = {
     searchCategories: string;
     category: string;
     categoriesCount: string;
+  };
+  policies: {
+    title: string;
+    subtitle: string;
+    newPolicy: string;
+    editPolicy: string;
+    policyName: string;
+    category: string;
+    allCategories: string;
+    priority: string;
+    enabled: string;
+    splitType: string;
+    equal: string;
+    percentage: string;
+    fixed: string;
+    weighted: string;
+    excludedMembers: string;
+    memberValues: string;
+    memberValuesHint: string;
+    save: string;
+    cancel: string;
+    noPolicies: string;
+    active: string;
+    inactive: string;
+    conflict: string;
+    preview: string;
+    selectExpense: string;
+    noExpenses: string;
+    existing: string;
+    proposed: string;
+    member: string;
+    amount: string;
+    calculation: string;
+    adjustment: string;
+    warnings: string;
+    errors: string;
+    audit: string;
+    auditEmpty: string;
+    delete: string;
+    edit: string;
+    noRule: string;
+    ambiguousRule: string;
+    choosePolicy: string;
+    conflicts: string;
+    conflictHint: string;
+    excluded: string;
+    noMembers: string;
+    selectRule: string;
   };
 };
 

@@ -91,6 +91,28 @@ export interface CategoryGroup {
 // Category rename mapping: original name -> new display name
 export type CategoryRenames = Record<string, string>;
 
+export type ExpenseSplitType = 'equal' | 'percentage' | 'fixed' | 'weighted';
+
+export interface ExpensePolicy {
+  id: string;
+  name: string;
+  category: string;
+  priority: number;
+  enabled: boolean;
+  splitType: ExpenseSplitType;
+  excludedMembers: string[];
+  values: Record<string, number>;
+}
+
+export interface ExpensePolicyAuditEntry {
+  id: string;
+  policyId: string;
+  policyName: string;
+  action: 'created' | 'updated' | 'deleted';
+  timestamp: string;
+  summary: string;
+}
+
 // Filter state for the dashboard
 export interface FilterState {
   member: string | null;
